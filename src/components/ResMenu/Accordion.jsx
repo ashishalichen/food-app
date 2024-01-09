@@ -27,12 +27,13 @@ export default function Accordion({ props }) {
         {
               accordion.map((acc, k) => (
                             <>
-                                <h3 
+                                <div
+                                className="accord-list" 
                                 key={k}
-                                onClick={<RestaurantMenu props={acc?.card?.card?.itemCards}/>}
                                 >
-                                    {acc.card.card.title}
-                                </h3>
+                                    <h3>{acc.card.card.title}</h3>
+                                    <RestaurantMenu props={acc?.card?.card?.itemCards}/>
+                                </div>
                                 
                             </>
                     ))
@@ -41,20 +42,3 @@ export default function Accordion({ props }) {
     )
 }
 
-
-/*
-
-
-{
-                    accordion.map((acc, k) => (
-                            <>
-                                <h3 key={k}>{acc.card.card.title}</h3>
-                                <RestaurantMenu props={acc?.card?.card?.itemCards}/>
-                            </>
-                    ))
-                }
-
-*/
-
-/*<h3>{accordion[1].card.card.title}</h3>
-            <RestaurantMenu props={accordion[1].card?.card?.itemCards}/>   */
