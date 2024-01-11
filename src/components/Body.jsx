@@ -22,7 +22,8 @@ export default function Body() {
         const data = await fetch(RES_API)
 
         const json = await data.json()
-        const restaurant = json?.data?.cards[2].card?.card?.gridElements.infoWithStyle.restaurants
+        // const restaurant = json?.data?.cards[2].card?.card?.gridElements?.infoWithStyle?.restaurants
+        const restaurant = json?.data?.cards[1].card?.card?.gridElements?.infoWithStyle?.restaurants
         // console.log(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
 
         setResList(restaurant)
@@ -32,8 +33,10 @@ export default function Body() {
 
     // console.log(searchText)
     // console.log(resList)
+    console.log(resList)
+    
 
-    return resList.length === 0 ? <Shimmer /> : (
+    return !resList ? <Shimmer /> : (
         <div className="body">
             <div className="search-container">
                 <input

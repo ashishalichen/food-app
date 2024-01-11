@@ -4,10 +4,11 @@ import { useParams } from "react-router-dom"
 import { MENU_API } from "../../constant";
 
 
+
 export default function RestaurantMenu({ props }) {
 
-    const [resInfo, setResInfo] = useState(null)
-    const { resId } = useParams();
+    // const [resInfo, setResInfo] = useState(null)
+    // const { resId } = useParams();
 
     // useEffect(() => {
     //     fetchMenu()
@@ -27,7 +28,7 @@ export default function RestaurantMenu({ props }) {
     // setResInfo(props)
 
     if (!props) {
-        return <h3></h3>
+        return <li className="menu">No items</li>
     }
 
     // const { name, costForTwoMessage, cuisines } = props?.cards[0]?.card?.card?.info;
@@ -37,8 +38,7 @@ export default function RestaurantMenu({ props }) {
 
 
     return (
-        <div className="menu">
-            <ul>
+            <ul className="menu">
                 {
                     props.map((items) => (
                         <li key={items.card.info.id}>
@@ -47,6 +47,6 @@ export default function RestaurantMenu({ props }) {
                     ))
                 }
             </ul>
-        </div>
+
     )
 }

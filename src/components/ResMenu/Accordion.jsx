@@ -3,10 +3,12 @@ import { MENU_API } from "../../constant";
 import Shimmer from "../Shimmer";
 import { Link, useParams } from "react-router-dom";
 import RestaurantMenu from "./RestaurantMenu";
+import "./RestaurantMenu.css"
 
 export default function Accordion({ props }) {
 
     const [accordion, setAccordion] = useState(null)
+    const [isVisible,setVisible] = useState(null)
     const { resId } = useParams()
 
     async function fetchAPI() {
@@ -14,13 +16,17 @@ export default function Accordion({ props }) {
         const json = await data.json()
         // console.log(json.data.cards[2].groupedCard.cardGroupMap.REGULAR.cards)
         setAccordion(json.data.cards[2].groupedCard.cardGroupMap.REGULAR.cards)
+        setVisible(json.data.cards[2].groupedCard.cardGroupMap.REGULAR.cards)
     }
+
+    const item = 
 
     useEffect(() => {
         fetchAPI()
     }, [])
 
     if (accordion === null) return <Shimmer />
+    
 
     return (
         <div className="accord-container">
@@ -31,8 +37,11 @@ export default function Accordion({ props }) {
                                 className="accord-list" 
                                 key={k}
                                 >
-                                    <h3>{acc.card.card.title}</h3>
-                                    <RestaurantMenu props={acc?.card?.card?.itemCards}/>
+                                    <h3
+                                        className="accord-title"
+                                        onClick={()=>setVisible(k===isVisible?null:k)}
+                                    >{acc.card.card.title}</h3>
+                                    {isVisible === k && <RestaurantMenu props={acc?.card?.card?.itemCards} />}
                                 </div>
                                 
                             </>
