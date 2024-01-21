@@ -1,4 +1,4 @@
-import { CDN_URL } from "../constant"
+import { CDN_URL } from "./Utils/constant"
 
 
 export default function RestaurantCard({ props }) {

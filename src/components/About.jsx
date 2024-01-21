@@ -1,12 +1,10 @@
+import User from "./User"
+import UserClass from "../UserClass"
 
 export default function About() {
     return (
-        <div>
-            <h1>Hey</h1>
-            <h1>Hey</h1>
-            <h1>Hey</h1>
-            <h1>Hey</h1>
-            <h1>Hey</h1>
-        </div>
+        <>
+            <User name={"Ashish (func)"} location = {"Delhi (func)"}/>
+        </>
     )
 }

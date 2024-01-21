@@ -2,41 +2,43 @@ import { useEffect } from "react"
 import { useState } from "react"
 import RestaurantCard from "./RestaurantCard"
 import Shimmer from "./Shimmer"
-import { RES_API } from "../constant"
 import { Link } from "react-router-dom"
+import useRestaurantList from "./Utils/useRestaurantList";
+import useOnlineStatus from "./Utils/useOnlineStatus"
 
 
 
 
 export default function Body() {
-    const [resList, setResList] = useState([])
     const [filterList, setFilterList] = useState([])
     const [filterBtn, setFilterBtn] = useState('Top Rated')
     const [searchText, setSearchText] = useState('')
 
+    const resList = useRestaurantList()
+    const onlineStatus = useOnlineStatus()
+
     useEffect(() => {
-        fetchResList()
-    }, [])
+        if (resList) {
+            setFilterList(resList);
+        }
+    }, [resList]);
 
-    async function fetchResList() {
-        const data = await fetch(RES_API)
 
-        const json = await data.json()
-        // const restaurant = json?.data?.cards[2].card?.card?.gridElements?.infoWithStyle?.restaurants
-        const restaurant = json?.data?.cards[1].card?.card?.gridElements?.infoWithStyle?.restaurants
-        // console.log(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
-
-        setResList(restaurant)
-        setFilterList(restaurant)
-
+    if (!resList) {
+        return <Shimmer />
     }
+
+    if (onlineStatus === false) {
+        return <h1>Looks like you are offline</h1>
+    }
+
 
     // console.log(searchText)
     // console.log(resList)
     console.log(resList)
-    
 
-    return !resList ? <Shimmer /> : (
+
+    return (
         <div className="body">
             <div className="search-container">
                 <input
@@ -53,6 +55,8 @@ export default function Body() {
                         }
                     }}
                 />
+
+
                 <button
                     className="search"
                     onClick={() => {
@@ -60,6 +64,9 @@ export default function Body() {
                         setFilterList(newList)
                     }}
                 >Search</button>
+
+
+
                 <button
                     className="filter"
                     onClick={() => {
@@ -73,11 +80,14 @@ export default function Body() {
                         // console.log(filterList)
                     }}>{filterBtn}</button>
             </div>
+
+
+
             <div className="res-container">
                 {
                     filterList.map((res) => (
                         <Link
-                            // key={res.info.id}
+                            key={res.info.id}
                             to={"/accordion/" + res.info.id}><RestaurantCard props={res} />
                         </Link>
                     ))

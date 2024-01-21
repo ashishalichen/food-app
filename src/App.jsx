@@ -1,15 +1,22 @@
 import Header from "./components/Header"
 import Body from "./components/Body"
-import About from "./components/About"
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import ReactDOM from 'react-dom/client'
-import About from './components/About.jsx'
+// import About from './components/About.jsx'
 import './index.css'
 import { RouterProvider, createBrowserRouter, Outlet } from 'react-router-dom'
 import Contact from './components/Contact.jsx'
 import Error from './components/Error.jsx'
-import RestaurantMenu from "./components/ResMenu/RestaurantMenu.jsx"
 import Accordion from "./components/ResMenu/Accordion.jsx"
+
+
+// chunking
+// code splitting
+// dynamic bundling
+// lazy loading
+// on demand loading
+// dynamic import
+const About = lazy(() => import('./components/About.jsx'))
 
 function App() {
   return (
@@ -31,7 +38,9 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/about",
-        element: <About />
+        element: <Suspense fallback={<h1>Loading...</h1>}>
+          <About />
+        </Suspense>
       },
       {
         path: "/contact",
@@ -41,10 +50,6 @@ const appRouter = createBrowserRouter([
         path: "/accordion/:resId",
         element: <Accordion />
       },
-      // {
-      //   path: "/restaurant/:resId",
-      //   element: <RestaurantMenu />
-      // }
     ],
     errorElement: <Error />,
   },

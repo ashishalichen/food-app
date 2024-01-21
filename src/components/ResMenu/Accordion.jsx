@@ -1,52 +1,35 @@
-import { useEffect, useState } from "react";
-import { MENU_API } from "../../constant";
+import { useState } from "react";
 import Shimmer from "../Shimmer";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import RestaurantMenu from "./RestaurantMenu";
 import "./RestaurantMenu.css"
+import useRestaurantMenu from "../Utils/useRestaurantMenu";
 
 export default function Accordion({ props }) {
 
-    const [accordion, setAccordion] = useState(null)
-    const [isVisible,setVisible] = useState(null)
+    const [indexClicked, setIndexClicked] = useState(null)
     const { resId } = useParams()
 
-    async function fetchAPI() {
-        const data = await fetch(MENU_API + resId);
-        const json = await data.json()
-        // console.log(json.data.cards[2].groupedCard.cardGroupMap.REGULAR.cards)
-        setAccordion(json.data.cards[2].groupedCard.cardGroupMap.REGULAR.cards)
-        setVisible(json.data.cards[2].groupedCard.cardGroupMap.REGULAR.cards)
-    }
-
-    const item = 
-
-    useEffect(() => {
-        fetchAPI()
-    }, [])
-
+    const accordion = useRestaurantMenu(resId)
     if (accordion === null) return <Shimmer />
-    
+
 
     return (
         <div className="accord-container">
-        {
-              accordion.map((acc, k) => (
-                            <>
-                                <div
-                                className="accord-list" 
-                                key={k}
-                                >
-                                    <h3
-                                        className="accord-title"
-                                        onClick={()=>setVisible(k===isVisible?null:k)}
-                                    >{acc.card.card.title}</h3>
-                                    {isVisible === k && <RestaurantMenu props={acc?.card?.card?.itemCards} />}
-                                </div>
-                                
-                            </>
-                    ))
-                }
+            {
+                accordion.map((acc, index) => (
+                    <div
+                        className="accord-list"
+                        key={index}
+                    >
+                        <h3
+                            className="accord-title"
+                            onClick={() => setIndexClicked(index === indexClicked ? null : index)}
+                        >{acc.card.card.title}</h3>
+                        {indexClicked === index && <RestaurantMenu props={acc?.card?.card?.itemCards} />}
+                    </div>
+                ))
+            }
         </div>
     )
 }
